@@ -49,7 +49,7 @@ class ImageController extends Controller
                 }
                 
                 // Generate the URL manually to ensure it works
-                $url = URL::to('/storage/images/' . $filename);
+                $url = url(Storage::url('images/' . $filename));
                 
                 Log::info('Image uploaded successfully', [
                     'filename' => $filename,
