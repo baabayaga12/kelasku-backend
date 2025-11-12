@@ -26,7 +26,12 @@ class ImageController extends Controller
                     ], 400);
                 }
                 
-                $filename = time() . '_' . $file->getClientOriginalName();
+                $originalName = $file->getClientOriginalName();
+                
+                // Sanitize filename: replace spaces and special characters
+                $sanitizedName = preg_replace('/[^A-Za-z0-9\-_\.]/', '_', $originalName);
+                
+                $filename = time() . '_' . $sanitizedName;
                 
                 // Ensure the images directory exists
                 $imagesPath = storage_path('app/public/images');
