@@ -68,14 +68,26 @@ class TestController extends Controller
 
         foreach ($attempt->answers as $answer) {
             $question = $answer->question;
-            $correctAnswer = $question->answers()->where('is_correct', true)->first();
-            
-            if ($correctAnswer && $answer->answer_text === $correctAnswer->answer_text) {
+
+            // Get correct answer based on correct_answer field (A, B, C, D)
+            $correctAnswer = null;
+            $optionMapping = [
+                'A' => $question->option_a,
+                'B' => $question->option_b,
+                'C' => $question->option_c,
+                'D' => $question->option_d,
+            ];
+
+            if ($question->correct_answer && isset($optionMapping[$question->correct_answer])) {
+                $correctAnswer = $optionMapping[$question->correct_answer];
+            }
+
+            if ($correctAnswer && $answer->answer_text === $correctAnswer) {
                 $correctAnswers++;
             }
         }
 
-        $score = ($correctAnswers / $totalQuestions) * 100;
+        $score = $totalQuestions > 0 ? ($correctAnswers / $totalQuestions) * 100 : 0;
         $attempt->score = $score;
         $attempt->save();
 

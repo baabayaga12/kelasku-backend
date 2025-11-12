@@ -81,12 +81,19 @@ class AttemptController extends Controller
         foreach ($answers as $a) {
             $q = $questions[$a->question_id] ?? null;
             if ($q) {
-                // resolve correct answer from answers table (Answer model)
+                // Get correct answer based on correct_answer field (A, B, C, D)
                 $correctAnswer = null;
-                if (method_exists($q, 'answers')) {
-                    $correctRec = $q->answers()->where('is_correct', true)->first();
-                    $correctAnswer = $correctRec ? $correctRec->answer_text : null;
+                $optionMapping = [
+                    'A' => $q->option_a,
+                    'B' => $q->option_b,
+                    'C' => $q->option_c,
+                    'D' => $q->option_d,
+                ];
+
+                if ($q->correct_answer && isset($optionMapping[$q->correct_answer])) {
+                    $correctAnswer = $optionMapping[$q->correct_answer];
                 }
+
                 if ($correctAnswer !== null && $correctAnswer === $a->answer) $correct++;
             }
         }
@@ -133,10 +140,17 @@ class AttemptController extends Controller
             $userA = $answers->firstWhere('question_id', $qid);
             $userAnswer = $userA->answer ?? null;
 
+            // Get correct answer based on correct_answer field (A, B, C, D)
             $correctAnswer = null;
-            if (method_exists($q, 'answers')) {
-                $correctRec = $q->answers()->where('is_correct', true)->first();
-                $correctAnswer = $correctRec ? $correctRec->answer_text : null;
+            $optionMapping = [
+                'A' => $q->option_a,
+                'B' => $q->option_b,
+                'C' => $q->option_c,
+                'D' => $q->option_d,
+            ];
+
+            if ($q->correct_answer && isset($optionMapping[$q->correct_answer])) {
+                $correctAnswer = $optionMapping[$q->correct_answer];
             }
 
             $isCorrect = $userAnswer !== null && $correctAnswer !== null && $correctAnswer === $userAnswer;
@@ -365,9 +379,20 @@ class AttemptController extends Controller
         $correct = 0;
         foreach ($answers as $a) {
             $q = $questions->firstWhere('id', $a->question_id);
-            if ($q && method_exists($q, 'answers')) {
-                $correctRec = $q->answers()->where('is_correct', true)->first();
-                $correctAnswer = $correctRec ? $correctRec->answer_text : null;
+            if ($q) {
+                // Get correct answer based on correct_answer field (A, B, C, D)
+                $correctAnswer = null;
+                $optionMapping = [
+                    'A' => $q->option_a,
+                    'B' => $q->option_b,
+                    'C' => $q->option_c,
+                    'D' => $q->option_d,
+                ];
+
+                if ($q->correct_answer && isset($optionMapping[$q->correct_answer])) {
+                    $correctAnswer = $optionMapping[$q->correct_answer];
+                }
+
                 if ($correctAnswer !== null && $correctAnswer === $a->answer) $correct++;
             }
         }
@@ -505,9 +530,20 @@ class AttemptController extends Controller
         $correct = 0;
         foreach ($answers as $a) {
             $q = $questions->firstWhere('id', $a->question_id);
-            if ($q && method_exists($q, 'answers')) {
-                $correctRec = $q->answers()->where('is_correct', true)->first();
-                $correctAnswer = $correctRec ? $correctRec->answer_text : null;
+            if ($q) {
+                // Get correct answer based on correct_answer field (A, B, C, D)
+                $correctAnswer = null;
+                $optionMapping = [
+                    'A' => $q->option_a,
+                    'B' => $q->option_b,
+                    'C' => $q->option_c,
+                    'D' => $q->option_d,
+                ];
+
+                if ($q->correct_answer && isset($optionMapping[$q->correct_answer])) {
+                    $correctAnswer = $optionMapping[$q->correct_answer];
+                }
+
                 if ($correctAnswer !== null && $correctAnswer === $a->answer) $correct++;
             }
         }
