@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\UserSeeder::class);
         $this->call(\Database\Seeders\CBTSeeder::class);
         $this->call(\Database\Seeders\StimulusExamplesSeeder::class);
+        $this->call(\Database\Seeders\TenQuestionsSeeder::class);
     }
 }
