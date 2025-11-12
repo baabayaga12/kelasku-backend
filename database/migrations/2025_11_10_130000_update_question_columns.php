@@ -23,7 +23,7 @@ return new class extends Migration
                 $table->string('option_d')->nullable();
             }
             if (!Schema::hasColumn('questions', 'correct_answer')) {
-                $table->string('correct_answer');
+                $table->string('correct_answer')->default('A');
             }
             if (!Schema::hasColumn('questions', 'duration')) {
                 $table->integer('duration')->default(60);
